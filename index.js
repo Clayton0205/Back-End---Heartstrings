@@ -104,7 +104,7 @@ router.patch('/users', bodyParser.json(), (req, res) => {
 })
 
 //REGISTER
-router.post('/users', bodyParser.json(), (req, res)=>{
+router.post('/users', bodyParser.json(), (req, res) => {
     const body = req.body
     const email = `
         SELECT * FROM users WHERE Email = ?
@@ -113,7 +113,7 @@ router.post('/users', bodyParser.json(), (req, res)=>{
     let emailReg = {
         Email: body.Email
     }
-    db.query(email, emailReg ,async(err ,results)=>{
+    db.query(email, emailReg, async (err, results) => {
         if (err) throw err
         if (results.length > 0) {
             res.json({
@@ -129,7 +129,7 @@ router.post('/users', bodyParser.json(), (req, res)=>{
                 VALUES(?, ?, ?)
             `
 
-            db.query(add, [body.Fullname, body.Email, body.Password], (err, results)=>{
+            db.query(add, [body.Fullname, body.Email, body.Password], (err, results) => {
                 if (err) throw err
                 res.json({
                     status: 200,
@@ -140,4 +140,40 @@ router.post('/users', bodyParser.json(), (req, res)=>{
     })
 })
 
+//EDIT USER
+router.put('/users/:id', bodyParser.json(), async (req, res) => {
+    const body = req.body
+    const edit =
+        `
+    UPDATE users
+    SET Fullname = ?, Email = ?, password = ?
+    WHERE userID = ${req.params.id}
+    `
 
+    let generateSalt = await bcrypt.genSalt()
+    body.Password = await bcrypt.hash(body.Password, generateSalt)
+    db.query(edit, [body.Fullname, body.Email, body.Password], (err, results) => {
+        if (err) throw err
+        res.json({
+            status: 204,
+            msg: 'User has been edited succsessfully'
+        })
+    })
+})
+
+// DELETE USER
+router.delete('/users/:id', (req, res) => {
+    const deleteUser =
+        `
+DELETE FROM users WHERE userID = ${req.params.id};
+ALTER TABLE users AUTO_INCREMENT = 1;
+`
+
+    db.query(deleteUser, (err, results) => {
+        if (err) throw err
+        res.json({
+            status: 204,
+            msg: 'User Delete Successfully'
+        })
+    })
+})
