@@ -27,6 +27,7 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/views/home.html')
 })
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // All USERS
 router.get('/users', (req, res) => {
@@ -140,7 +141,7 @@ router.patch('/users', bodyParser.json(), (req, res) => {
     })
 })
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 //EDIT USER
 router.put('/users/:id', bodyParser.json(), async (req, res) => {
@@ -226,6 +227,23 @@ router.post('/albums', bodyParser.json(), (req, res) => {
         res.json({
             status: 204,
             msg: "Album added successfully"
+        })
+    })
+})
+
+//EDIT ALBUM
+router.put('/albums/:id', bodyParser.json(), (req, res)=>{
+    const editProdQ = `
+        UPDATE albums
+        SET musictype = ?, album = ?, image = ?, description = ?, artist = ?, year = ?, price = ?, creatorID = ?
+        WHERE albumID = ${req.params.id}
+    `
+
+    db.query(editProdQ, [req.body.musictype, req.body.album, req.body.image, req.body.description, req.body.artist, req.body.year, req.body.price, req.body.creatorID], (err, results)=>{
+        if (err) throw err
+        res.json({
+            status: 200,
+            results: 'The album has been edited succesfully'
         })
     })
 })
