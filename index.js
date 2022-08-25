@@ -3,7 +3,7 @@ const db = require('./config/dbconnection')
 const cors = require('cors')
 const express = require('express')
 const bodyParser = require('body-parser')
-const bcrypt = require('bcrypt')
+const {hash} = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 const app = express()
@@ -77,8 +77,8 @@ router.post('/users', bodyParser.json(), (req, res) => {
                 msg: 'The provided email already exists'
             })
         } else {
-            let generateSalt = await bcrypt.genSalt()
-            body.Password = await bcrypt.hash(body.Password, generateSalt)
+            // let generateSalt = await bcrypt.genSalt()
+            body.Password = await hash(body.Password, 10);
 
             const add = `
                 INSERT INTO users(Fullname, Email, Password)
