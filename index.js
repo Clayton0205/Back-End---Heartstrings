@@ -24,7 +24,7 @@ app.use(router, cors(), express.json(), bodyParser.urlencoded({ extended: true }
 app.listen(app.get('Port'), () => { console.log(`Server is running on port ${app.get('Port')}`); })
 
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/views/home.html')
+    res.sendFile('/views/home.html', {root: __dirname})
 })
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
