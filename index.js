@@ -3,7 +3,7 @@ const db = require('./config/dbconnection')
 const cors = require('cors')
 const express = require('express')
 const bodyParser = require('body-parser')
-const {hash} = require('bcrypt')
+const {hash, compare, genSalt} = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 const app = express()
@@ -114,7 +114,7 @@ router.patch('/users', bodyParser.json(), (req, res) => {
                 msg: 'Email Not Found'
             })
         } else {
-            if (await bcrypt.compare(body.Password, results[0].Password) == false) {
+            if (await compare(body.Password, results[0].Password) == false) {
                 res.json({
                     status: 404,
                     msg: 'Password is Incorrect'
@@ -153,8 +153,8 @@ router.put('/users/:id', bodyParser.json(), async (req, res) => {
     WHERE userID = ${req.params.id}
     `
 
-    let generateSalt = await bcrypt.genSalt()
-    body.Password = await bcrypt.hash(body.Password, generateSalt)
+    let generateSalt = await genSalt()
+    body.Password = await hash(body.Password, generateSalt)
     db.query(edit, [body.Fullname, body.Email, body.Password], (err, results) => {
         if (err) throw err
         res.json({
