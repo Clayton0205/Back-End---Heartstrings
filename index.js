@@ -202,7 +202,7 @@ router.get('/albums', (req, res) => {
 router.get('/albums/:id', (req, res) => {
     const getSingle =
         `
-    SELECT * FROM albums WHERE albumID = ${req.params.id}
+    SELECT * FROM albums WHERE id = ${req.params.id}
     `
 
     db.query(getSingle, (err, results) => {
@@ -236,7 +236,7 @@ router.put('/albums/:id', bodyParser.json(), (req, res)=>{
     const editProdQ = `
         UPDATE albums
         SET musictype = ?, album = ?, image = ?, description = ?, artist = ?, year = ?, price = ?, creatorID = ?
-        WHERE albumID = ${req.params.id}
+        WHERE id = ${req.params.id}
     `
 
     db.query(editProdQ, [req.body.musictype, req.body.album, req.body.image, req.body.description, req.body.artist, req.body.year, req.body.price, req.body.creatorID], (err, results)=>{
@@ -252,7 +252,7 @@ router.put('/albums/:id', bodyParser.json(), (req, res)=>{
 router.delete('/albums/:id', (req, res) => {
     const deleteAlbum =
         `
-    DELETE FROM albums WHERE albumID = ${req.params.id};
+    DELETE FROM albums WHERE id = ${req.params.id};
     `
 
     db.query(deleteAlbum, (err, results) => {
