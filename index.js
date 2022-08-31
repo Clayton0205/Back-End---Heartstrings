@@ -203,9 +203,9 @@ router.get('/albums/:id', (req, res) => {
     const getSingle =
         `
     SELECT * FROM albums WHERE id = ?
-    `[req.params.id]
+    `
 
-    db.query(getSingle, (err, results) => {
+    db.query(getSingle,[req.params.id], (err, results) => {
         if (err) throw err
         res.json({
             status: 200,
