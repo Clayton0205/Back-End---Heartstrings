@@ -100,7 +100,7 @@ router.post('/users', bodyParser.json(), (req, res) => {
 router.patch('/users', bodyParser.json(), (req, res) => {
     const body = req.body
     const login = `
-        SELECT * FROM users WHERE ?
+        SELECT * FROM users WHERE email = ?
     `
 
     let email = {
@@ -122,7 +122,6 @@ router.patch('/users', bodyParser.json(), (req, res) => {
             } else {
                 const payload = {
                     user: {
-                        Fullname: results[0].Fullname,
                         Email: results[0].Email,
                         Password: results[0].Password,
                     }
