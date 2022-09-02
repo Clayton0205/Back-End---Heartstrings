@@ -122,6 +122,7 @@ router.patch('/users', bodyParser.json(), (req, res) => {
             } else {
                 const payload = {
                     user: {
+                        Fullname: results[0].Fullname,
                         Email: results[0].Email,
                         Password: results[0].Password,
                     }
