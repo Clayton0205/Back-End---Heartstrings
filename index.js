@@ -106,9 +106,9 @@ router.patch('/users', bodyParser.json(), (req, res) => {
     let email = {
         Email: body.Email
     }
-    db.query(login, email, async (err, results) => {
+    db.query(login, email.Email, async (err, results) => {
         if (err) throw err
-        if (results.length === 0) {
+        if (results.length < 0) {
             res.json({
                 status: 400,
                 msg: 'Email Not Found'
@@ -122,7 +122,6 @@ router.patch('/users', bodyParser.json(), (req, res) => {
             } else {
                 const payload = {
                     user: {
-                        Fullname: results[0].Fullname,
                         Email: results[0].Email,
                         Password: results[0].Password,
                     }
