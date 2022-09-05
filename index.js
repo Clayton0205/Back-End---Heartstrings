@@ -307,7 +307,7 @@ router.post('/users/:id/cart', bodyParser.json(),(req, res)=>{
                 cart = JSON.parse(results[0].Cart)
             }
             let album = {
-                "albumID" : cart.length + 1,
+                "id" : cart.length + 1,
                 "musictype" : bd.musictype,
                 "album" : bd.album,
                 "image" : bd.image,
@@ -380,8 +380,6 @@ router.delete('/users/:id/cart/:cartId', (req,res)=>{
             if(err) throw err;
 
             if(results.length > 0){
-                // console.log(results)
-                // console.log(JSON.parse(results[0].Cart))
                 if(results[0].Cart != null){
 
                     const result = JSON.parse(results[0].Cart).filter((Cart)=>{
