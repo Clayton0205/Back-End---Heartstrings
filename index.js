@@ -10,6 +10,9 @@ const app = express()
 const router = express.Router()
 
 app.set('Port', process.env.PORT || 8008)
+
+
+
 app.use(express.static('view'))
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -218,7 +221,7 @@ router.post('/albums', bodyParser.json(), (req, res) => {
     const add =
         `
     INSERT INTO albums(musictype, album, image, description, artist, year, price, creatorID)
-    VALUES(?, ?, ?, ?, ?, ?, ?, ?    
+    VALUES(?, ?, ?, ?, ?, ?, ?, ?)
     `
 
     db.query(add, [req.body.musictype, req.body.album, req.body.image, req.body.description, req.body.artist, req.body.year, req.body.price, req.body.creatorID], (err, results) => {
